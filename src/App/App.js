@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Table } from '../components';
+import { Table } from '../components';
 import Layout from '../hoc/Layout';
+import { IoIosAddCircle } from 'react-icons/io';
 
 const App = () => {
   const columns = [
@@ -30,11 +31,29 @@ const App = () => {
     },
     { category: 'Bundle', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
     { category: 'Unlimited', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
+    { category: 'Bundle', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
+    { category: 'Unlimited', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
+    { category: 'Bundle', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
+    { category: 'Unlimited', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
+    { category: 'Bundle', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
+    { category: 'Unlimited', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
+    { category: 'Bundle', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
+    { category: 'Unlimited', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
+    { category: 'Bundle', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
+    { category: 'Unlimited', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
+    { category: 'Bundle', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
+    { category: 'Unlimited', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
   ];
   return (
     <Layout>
-      <Button variant="primary">Samasdasdasdple</Button>
       <Table columns={columns} data={data} />
+      {/* <Button className={'fixed top-24 right-4'} variant="secondary">
+        Add
+      </Button> */}
+      <IoIosAddCircle
+        className="fixed top-20 right-1 text-cyan-700 cursor-pointer"
+        size={'64px'}
+      />
     </Layout>
   );
 };
