@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from '../components';
+import { Button, Table } from '../components';
 import Layout from '../hoc/Layout';
 
 const App = () => {
@@ -33,6 +33,7 @@ const App = () => {
   ];
   return (
     <Layout>
+      <Button variant="primary">Samasdasdasdple</Button>
       <Table columns={columns} data={data} />
     </Layout>
   );
