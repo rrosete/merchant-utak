@@ -1,8 +1,7 @@
-import React from 'react';
-import { Button, Input, Table } from '../components';
+import React, { useState } from 'react';
+import { Button, Input, Modal, Select, Table } from '../components';
 import Layout from '../hoc/Layout';
 import { GrAdd } from 'react-icons/gr';
-import { useModalStore } from '../store';
 
 const App = () => {
   const columns = [
@@ -46,33 +45,14 @@ const App = () => {
     { category: 'Unlimited', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
   ];
 
-  const open = useModalStore((state) => state.setOpen);
-  const close = useModalStore((state) => state.setClose);
-  const setModalStore = useModalStore((state) => state.setModal);
+  const sizeOptions = [
+    { value: '', label: 'Select Category' },
+    { value: 'small', label: 'Small' },
+    { value: 'medium', label: 'Medium' },
+    { value: 'large', label: 'Large' },
+  ];
 
-  const handleModal = () => {
-    setModalStore({
-      // variant: 'confirmation',
-      title: 'Add Menu',
-      body: (
-        <>
-          <div className="flex flex-col">
-            <Input placeholder="Name..." label="Name" />
-          </div>
-        </>
-      ),
-      footer: (
-        <>
-          <Button variant="primary" onClick={open}>
-            Open
-          </Button>
-          <Button variant="primary" onClick={close}>
-            Close
-          </Button>
-        </>
-      ),
-    });
-  };
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
@@ -80,14 +60,32 @@ const App = () => {
         <Table columns={columns} data={data} />
         <Button
           onClick={() => {
-            handleModal();
-            open();
+            setIsOpen(true);
           }}
           className="fixed bottom-4 right-4 border bg-cyan-700 cursor-pointer rounded-full text-2xl text-white py-4"
           variant="secondary"
         >
           <GrAdd />
         </Button>
+        <Modal isOpen={isOpen} title="Add Menu">
+          <Modal.Body>
+            <div className="flex flex-col">
+              <Select label="Category" options={sizeOptions} />
+              <Input placeholder="Name..." label="Name" />
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="primary">Save</Button>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                setIsOpen(false);
+              }}
+            >
+              Cancel
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </Layout>
     </>
   );
