@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Table } from '../components';
+import { Button, Input, Table } from '../components';
 import Layout from '../hoc/Layout';
 import { GrAdd } from 'react-icons/gr';
 import { useModalStore } from '../store';
@@ -11,19 +11,19 @@ const App = () => {
 
   const handleModal = () => {
     setModalStore({
-      title: 'HHAHAHA',
+      title: 'Add Menu',
       body: (
         <>
-          <bold>asdasdasdasd</bold>
-          <i>italic</i>
+          <div className="flex flex-col">
+            <Input placeholder="Name..." />
+          </div>
         </>
       ),
       footer: (
         <>
-          {' '}
           <Button variant="primary" onClick={open}>
             Open
-          </Button>{' '}
+          </Button>
           <Button variant="primary" onClick={close}>
             Close
           </Button>
