@@ -1,9 +1,37 @@
 import React from 'react';
-import { Table } from '../components';
+import { Button, Table } from '../components';
 import Layout from '../hoc/Layout';
-import { IoIosAddCircle } from 'react-icons/io';
+import { GrAdd } from 'react-icons/gr';
+import { useModalStore } from '../store';
 
 const App = () => {
+  const open = useModalStore((state) => state.setOpen);
+  const close = useModalStore((state) => state.setClose);
+  const setModalStore = useModalStore((state) => state.setModal);
+
+  const handleModal = () => {
+    setModalStore({
+      title: 'HHAHAHA',
+      body: (
+        <>
+          <bold>asdasdasdasd</bold>
+          <i>italic</i>
+        </>
+      ),
+      footer: (
+        <>
+          {' '}
+          <Button variant="primary" onClick={open}>
+            Open
+          </Button>{' '}
+          <Button variant="primary" onClick={close}>
+            Close
+          </Button>
+        </>
+      ),
+    });
+  };
+
   const columns = [
     { header: 'Category', field: 'category' },
     { header: 'Name', field: 'name' },
@@ -45,16 +73,21 @@ const App = () => {
     { category: 'Unlimited', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
   ];
   return (
-    <Layout>
-      <Table columns={columns} data={data} />
-      {/* <Button className={'fixed top-24 right-4'} variant="secondary">
-        Add
-      </Button> */}
-      <IoIosAddCircle
-        className="fixed top-20 right-1 text-cyan-700 cursor-pointer"
-        size={'64px'}
-      />
-    </Layout>
+    <>
+      <Layout>
+        <Table columns={columns} data={data} />
+        <Button
+          onClick={() => {
+            handleModal();
+            open();
+          }}
+          className="fixed bottom-4 right-4 border bg-cyan-700 cursor-pointer rounded-full text-2xl text-white py-4"
+          variant="secondary"
+        >
+          <GrAdd />
+        </Button>
+      </Layout>
+    </>
   );
 };
 
