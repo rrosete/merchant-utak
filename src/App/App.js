@@ -5,33 +5,6 @@ import { GrAdd } from 'react-icons/gr';
 import { useModalStore } from '../store';
 
 const App = () => {
-  const open = useModalStore((state) => state.setOpen);
-  const close = useModalStore((state) => state.setClose);
-  const setModalStore = useModalStore((state) => state.setModal);
-
-  const handleModal = () => {
-    setModalStore({
-      title: 'Add Menu',
-      body: (
-        <>
-          <div className="flex flex-col">
-            <Input placeholder="Name..." />
-          </div>
-        </>
-      ),
-      footer: (
-        <>
-          <Button variant="primary" onClick={open}>
-            Open
-          </Button>
-          <Button variant="primary" onClick={close}>
-            Close
-          </Button>
-        </>
-      ),
-    });
-  };
-
   const columns = [
     { header: 'Category', field: 'category' },
     { header: 'Name', field: 'name' },
@@ -72,6 +45,35 @@ const App = () => {
     { category: 'Bundle', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
     { category: 'Unlimited', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
   ];
+
+  const open = useModalStore((state) => state.setOpen);
+  const close = useModalStore((state) => state.setClose);
+  const setModalStore = useModalStore((state) => state.setModal);
+
+  const handleModal = () => {
+    setModalStore({
+      // variant: 'confirmation',
+      title: 'Add Menu',
+      body: (
+        <>
+          <div className="flex flex-col">
+            <Input placeholder="Name..." label="Name" />
+          </div>
+        </>
+      ),
+      footer: (
+        <>
+          <Button variant="primary" onClick={open}>
+            Open
+          </Button>
+          <Button variant="primary" onClick={close}>
+            Close
+          </Button>
+        </>
+      ),
+    });
+  };
+
   return (
     <>
       <Layout>

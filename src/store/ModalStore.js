@@ -6,6 +6,7 @@ export const useModalStore = create((set) => ({
     title: '',
     body: null,
     footer: null,
+    variant: 'form',
   },
   setOpen: () => set((state) => ({ isOpen: true })),
   setClose: () => set((state) => ({ isOpen: false })),
