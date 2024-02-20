@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 
-export const Select = ({ label, options, error = '', ...props }) => {
+export const Select = forwardRef(({ label, options, error = '', ...props }) => {
   return (
     <div className="mb-4">
       <label className="block text-gray-700 text-sm mb-1">{label}</label>
@@ -17,4 +17,4 @@ export const Select = ({ label, options, error = '', ...props }) => {
       {error && <label className="text-red-400 text-xs">{error}</label>}
     </div>
   );
-};
+});
