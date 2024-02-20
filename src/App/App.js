@@ -10,6 +10,7 @@ import {
 import Layout from '../hoc/Layout';
 import { GrAdd } from 'react-icons/gr';
 import { TbCurrencyPeso } from 'react-icons/tb';
+import { useForm, Controller } from 'react-hook-form';
 
 const App = () => {
   const columns = [
@@ -61,18 +62,21 @@ const App = () => {
   ];
 
   const radioOptions = [
-    { id: 1, label: 'Small' },
-    { id: 2, label: 'Medium' },
-    { id: 3, label: 'Large' },
+    { value: 1, label: 'Small' },
+    { value: 2, label: 'Medium' },
+    { value: 3, label: 'Large' },
   ];
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const [selectedOption, setSelectedOption] = useState('');
-
-  const handleOptionChange = (optionId) => {
-    console.log(optionId);
-    setSelectedOption(optionId);
+  const onSubmit = (data) => {
+    console.log(data);
   };
 
   return (
@@ -88,55 +92,137 @@ const App = () => {
         >
           <GrAdd />
         </Button>
+
         <Modal isOpen={isOpen} title="Add Menu">
-          <Modal.Body>
-            <div className="flex flex-col">
-              <Select label="Category" options={sizeOptions} />
-              <Input placeholder="Name..." label="Name" />
-
-              <RadioButton
-                label={'Size'}
-                options={radioOptions}
-                selectedOption={selectedOption}
-                onChange={handleOptionChange}
-              />
-
-              <div className="grid grid-cols-2 gap-x-4">
-                <Input
-                  placeholder="Price..."
-                  label="Price"
-                  icon={
-                    <>
-                      <TbCurrencyPeso />
-                    </>
-                  }
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Modal.Body>
+              <div className="flex flex-col">
+                <Controller
+                  name="category"
+                  control={control}
+                  rules={{ required: 'Required this field' }}
+                  render={({ field }) => (
+                    <Select
+                      label="Category"
+                      options={sizeOptions}
+                      error={errors.category && errors.category.message}
+                      {...field}
+                    />
+                  )}
                 />
 
-                <Input
-                  placeholder="Cost..."
-                  label="Cost"
-                  icon={
-                    <>
-                      <TbCurrencyPeso />
-                    </>
-                  }
+                <Controller
+                  name="name"
+                  control={control}
+                  rules={{ required: 'Required this field' }}
+                  render={({ field }) => (
+                    <Input
+                      placeholder="Name..."
+                      label="Name"
+                      error={errors.name && errors.name.message}
+                      {...field}
+                    />
+                  )}
                 />
 
-                <Input placeholder="Stock..." label="Stock" />
+                <Controller
+                  name="size"
+                  control={control}
+                  rules={{ required: 'Please select an option' }}
+                  render={({ field }) => (
+                    <RadioButton
+                      options={radioOptions}
+                      label="Size"
+                      selectedOption={field.value}
+                      onChange={(e) => field.onChange(e.target.value)}
+                      error={errors.size && errors.size.message}
+                      {...field}
+                    />
+                  )}
+                />
+
+                <div className="grid grid-cols-2 gap-x-4">
+                  <Controller
+                    name="price"
+                    control={control}
+                    rules={{
+                      required: 'Required this field',
+                      pattern: {
+                        value: /^\d+$/,
+                        message: 'Please enter only numbers',
+                      },
+                    }}
+                    render={({ field }) => (
+                      <Input
+                        placeholder="Price..."
+                        label="Price"
+                        error={errors.price && errors.price.message}
+                        icon={
+                          <>
+                            <TbCurrencyPeso />
+                          </>
+                        }
+                        {...field}
+                      />
+                    )}
+                  />
+
+                  <Controller
+                    name="cost"
+                    control={control}
+                    rules={{
+                      required: 'Required this field',
+                      pattern: {
+                        value: /^\d+$/,
+                        message: 'Please enter only numbers',
+                      },
+                    }}
+                    render={({ field }) => (
+                      <Input
+                        placeholder="Cost..."
+                        label="Cost"
+                        error={errors.cost && errors.cost.message}
+                        icon={
+                          <>
+                            <TbCurrencyPeso />
+                          </>
+                        }
+                        {...field}
+                      />
+                    )}
+                  />
+
+                  <Controller
+                    name="stock"
+                    control={control}
+                    rules={{ required: 'Required this field' }}
+                    render={({ field }) => (
+                      <Input
+                        placeholder="Stock..."
+                        label="Stock"
+                        error={errors.stock && errors.stock.message}
+                        {...field}
+                      />
+                    )}
+                  />
+                </div>
               </div>
-            </div>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="primary">Save</Button>
-            <Button
-              variant="secondary"
-              onClick={() => {
-                setIsOpen(false);
-              }}
-            >
-              Cancel
-            </Button>
-          </Modal.Footer>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="primary" type="submit">
+                Save
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  setIsOpen(false);
+                }}
+                type="button"
+              >
+                Cancel
+              </Button>
+            </Modal.Footer>
+          </form>
         </Modal>
       </Layout>
     </>
