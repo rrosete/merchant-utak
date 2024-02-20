@@ -95,7 +95,7 @@ const App = () => {
               <Input placeholder="Name..." label="Name" />
 
               <RadioButton
-                title={'Size'}
+                label={'Size'}
                 options={radioOptions}
                 selectedOption={selectedOption}
                 onChange={handleOptionChange}

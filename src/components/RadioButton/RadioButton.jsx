@@ -6,13 +6,11 @@ export const RadioButton = ({
   options,
   selectedOption,
   onChange,
-  title,
-  ...props
 }) => {
   return (
     <>
       <div className="mb-4">
-        <label className="block text-gray-700 text-sm mb-1">{title}</label>
+        <label className="block text-gray-700 text-sm mb-1">{label}</label>
         <div className="flex flex-row space-x-4">
           {options.map((option) => (
             <label
