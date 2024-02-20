@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
-import { Button, Input, Modal, Select, Table } from '../components';
+import {
+  Button,
+  Input,
+  Modal,
+  RadioButton,
+  Select,
+  Table,
+} from '../components';
 import Layout from '../hoc/Layout';
 import { GrAdd } from 'react-icons/gr';
+import { TbCurrencyPeso } from 'react-icons/tb';
 
 const App = () => {
   const columns = [
@@ -47,12 +55,25 @@ const App = () => {
 
   const sizeOptions = [
     { value: '', label: 'Select Category' },
-    { value: 'small', label: 'Small' },
-    { value: 'medium', label: 'Medium' },
-    { value: 'large', label: 'Large' },
+    { value: 'main', label: 'Main' },
+    { value: 'dessert', label: 'Dessert' },
+    { value: 'breakfast', label: 'Breakfast' },
+  ];
+
+  const radioOptions = [
+    { id: 1, label: 'Small' },
+    { id: 2, label: 'Medium' },
+    { id: 3, label: 'Large' },
   ];
 
   const [isOpen, setIsOpen] = useState(false);
+
+  const [selectedOption, setSelectedOption] = useState('');
+
+  const handleOptionChange = (optionId) => {
+    console.log(optionId);
+    setSelectedOption(optionId);
+  };
 
   return (
     <>
@@ -72,6 +93,37 @@ const App = () => {
             <div className="flex flex-col">
               <Select label="Category" options={sizeOptions} />
               <Input placeholder="Name..." label="Name" />
+
+              <RadioButton
+                title={'Size'}
+                options={radioOptions}
+                selectedOption={selectedOption}
+                onChange={handleOptionChange}
+              />
+
+              <div className="grid grid-cols-2 gap-x-4">
+                <Input
+                  placeholder="Price..."
+                  label="Price"
+                  icon={
+                    <>
+                      <TbCurrencyPeso />
+                    </>
+                  }
+                />
+
+                <Input
+                  placeholder="Cost..."
+                  label="Cost"
+                  icon={
+                    <>
+                      <TbCurrencyPeso />
+                    </>
+                  }
+                />
+
+                <Input placeholder="Stock..." label="Stock" />
+              </div>
             </div>
           </Modal.Body>
           <Modal.Footer>
