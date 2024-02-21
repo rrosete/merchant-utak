@@ -11,12 +11,14 @@ import Layout from '../../hoc/Layout';
 import { GrAdd } from 'react-icons/gr';
 import { TbCurrencyPeso } from 'react-icons/tb';
 import { useForm, Controller } from 'react-hook-form';
-import { AddMenu, getMenus } from '../../helper/query';
+import { addMenu, deleteMenu, getMenus, updateMenu } from '../../helper/query';
+import { MdDelete, MdEdit } from 'react-icons/md';
 
 const Menu = () => {
   const columns = [
     { header: 'Category', field: 'category' },
     { header: 'Name', field: 'name' },
+    { header: 'Size', field: 'size' },
     { header: 'Price', field: 'price' },
     { header: 'Cost', field: 'cost' },
     { header: 'Stock', field: 'stock' },
@@ -37,47 +39,106 @@ const Menu = () => {
     { value: 'large', label: 'Large' },
   ];
 
+  const [menus, setMenus] = useState([]);
+  const [menuId, setMenuId] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+
   const {
     handleSubmit,
     control,
     formState: { errors },
     reset,
+    setValue,
   } = useForm();
-
-  const [menus, setMenus] = useState([]);
-
-  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     fetchData();
   }, []);
 
+  //fetching data
   const fetchData = () => {
     getMenus().then((data) => {
       setMenus(data);
     });
   };
 
-  const handleAddPost = async (data) => {
-    await AddMenu(data);
+  //post request
+  const handlePost = async (data) => {
+    await addMenu(data);
     fetchData();
   };
 
-  const onSubmit = (data) => {
-    handleAddPost(data);
+  const handleDelete = async (id) => {
+    await deleteMenu(id);
+    fetchData();
+  };
+
+  const handleUpdate = async (data) => {
+    setValue('category', data.category);
+    setValue('name', data.name);
+    setValue('price', data.price);
+    setValue('size', data.size);
+    setValue('cost', data.cost);
+    setValue('stock', data.stock);
+
+    setIsOpen(true);
+  };
+
+  const onSubmit = async (data) => {
+    if (menuId) {
+      await updateMenu(menuId, data);
+      fetchData();
+    } else {
+      handlePost(data);
+    }
+
     setIsOpen(false);
     reset();
   };
 
+  const renderMenus = menus
+    ? menus.map((item) => {
+        return {
+          category: item.category,
+          name: item.name,
+          size: item.size,
+          price: item.price,
+          cost: item.cost,
+          stock: item.stock,
+          action: (
+            <div className="flex items-center space-x-5">
+              <span
+                className="flex flex-row cursor-pointer items-center"
+                onClick={() => {
+                  handleUpdate(item);
+                  setMenuId(item.id);
+                }}
+              >
+                <MdEdit className="w-5 h-5" /> Edit
+              </span>
+              <span
+                className="flex flex-row cursor-pointer items-center"
+                onClick={() => {
+                  handleDelete(item.id);
+                }}
+              >
+                <MdDelete className="w-5 h-5" /> Delete
+              </span>
+            </div>
+          ),
+        };
+      })
+    : [];
+
   return (
     <Layout>
-      <Table columns={columns} data={menus} />
+      <Table columns={columns} data={renderMenus} />
       <Button
         onClick={() => {
           setIsOpen(true);
           reset();
         }}
-        className="fixed bottom-4 right-4 border bg-cyan-700 cursor-pointer rounded-full text-2xl text-white py-4"
+        className="fixed bottom-4 right-4 bg-cyan-700 cursor-pointer rounded-full text-2xl text-white py-4"
         variant="secondary"
       >
         <GrAdd />
@@ -200,7 +261,7 @@ const Menu = () => {
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary" type="submit">
-              Save
+              {`${menuId ? 'Update' : 'Save'}`}
             </Button>
             <Button
               variant="secondary"

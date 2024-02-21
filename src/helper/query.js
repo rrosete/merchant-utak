@@ -8,7 +8,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
 
-export const AddMenu = async (data) => {
+export const addMenu = async (data) => {
   try {
     const docRef = await addDoc(collection(db, 'menus'), data);
     console.log('Document written with ID: ', docRef.id);
