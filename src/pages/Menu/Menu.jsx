@@ -44,6 +44,7 @@ const Menu = () => {
   const [menuId, setMenuId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenDelete, setIsOpenDelete] = useState(false);
+  const [openLoading, setOpenLoading] = useState(false);
 
   const {
     handleSubmit,
@@ -62,15 +63,19 @@ const Menu = () => {
     getMenus().then((data) => {
       setMenus(data);
     });
+
+    setOpenLoading(false);
   };
 
   //post request
   const handlePost = async (data) => {
+    setOpenLoading(true);
     await addMenu(data);
     fetchData();
   };
 
   const handleDelete = async (id) => {
+    setOpenLoading(true);
     await deleteMenu(id);
     setIsOpenDelete(false);
     fetchData();
@@ -89,6 +94,7 @@ const Menu = () => {
 
   const onSubmit = async (data) => {
     if (menuId) {
+      setOpenLoading(true);
       await updateMenu(menuId, data);
       fetchData();
     } else {
@@ -135,7 +141,7 @@ const Menu = () => {
     : [];
 
   return (
-    <Layout>
+    <Layout openLoading={openLoading}>
       <Table columns={columns} data={renderMenus} />
       <Button
         onClick={() => {
