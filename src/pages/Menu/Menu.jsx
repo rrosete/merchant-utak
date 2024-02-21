@@ -14,6 +14,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { addMenu, deleteMenu, getMenus, updateMenu } from '../../helper/query';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { FaRegCircleQuestion } from 'react-icons/fa6';
+import { toast } from 'react-toastify';
 
 const Menu = () => {
   const columns = [
@@ -71,6 +72,7 @@ const Menu = () => {
   const handlePost = async (data) => {
     setOpenLoading(true);
     await addMenu(data);
+    toast.success('Menu Created Successfully.');
     fetchData();
   };
 
@@ -78,6 +80,8 @@ const Menu = () => {
     setOpenLoading(true);
     await deleteMenu(id);
     setIsOpenDelete(false);
+
+    toast.success('Menu Deleted Successfully.');
     fetchData();
   };
 
@@ -95,7 +99,10 @@ const Menu = () => {
   const onSubmit = async (data) => {
     if (menuId) {
       setOpenLoading(true);
+      setIsOpen(false);
       await updateMenu(menuId, data);
+
+      toast.success('Menu Updated Successfully.');
       fetchData();
     } else {
       handlePost(data);
@@ -146,6 +153,7 @@ const Menu = () => {
       <Button
         onClick={() => {
           setIsOpen(true);
+          setMenuId(null);
           reset();
         }}
         className="fixed bottom-4 right-4 bg-cyan-700 cursor-pointer rounded-full text-2xl text-white py-4"
