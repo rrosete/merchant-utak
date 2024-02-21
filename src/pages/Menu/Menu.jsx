@@ -158,6 +158,10 @@ const Menu = () => {
 
   return (
     <Layout openLoading={openLoading}>
+      <div className="mb-10">
+        <p>Menu</p>
+        <hr />
+      </div>
       <Table columns={columns} data={renderMenus} />
       <Button
         onClick={() => {

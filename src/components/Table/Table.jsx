@@ -2,7 +2,7 @@ import React from 'react';
 
 export const Table = ({ columns, data }) => {
   return (
-    <div className="overflow-x-auto rounded-tr-3xl rounded-tl-3xl mb-20 shadow-md">
+    <div className="overflow-x-auto rounded-xl mb-20 shadow-md">
       <table className="min-w-full border  text-left">
         <thead>
           <tr className="text-white bg-cyan-700">
@@ -26,7 +26,7 @@ export const Table = ({ columns, data }) => {
             ))
           ) : (
             <tr className="bg-white">
-              <td rowSpan={7} className="p-4">
+              <td colSpan={columns.length} className="p-4">
                 No data found.
               </td>
             </tr>
