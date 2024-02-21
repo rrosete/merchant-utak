@@ -127,8 +127,8 @@ const Menu = () => {
           category: item.category,
           name: item.name,
           size: item.size,
-          price: item.price,
-          cost: item.cost,
+          price: <span>&#8369; {item.price}</span>,
+          cost: <span>&#8369; {item.cost}</span>,
           stock: item.stock,
           action: (
             <div className="flex items-center space-x-5">
