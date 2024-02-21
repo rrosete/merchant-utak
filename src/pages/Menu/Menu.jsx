@@ -13,6 +13,7 @@ import { TbCurrencyPeso } from 'react-icons/tb';
 import { useForm, Controller } from 'react-hook-form';
 import { addMenu, deleteMenu, getMenus, updateMenu } from '../../helper/query';
 import { MdDelete, MdEdit } from 'react-icons/md';
+import { FaRegCircleQuestion } from 'react-icons/fa6';
 
 const Menu = () => {
   const columns = [
@@ -42,6 +43,7 @@ const Menu = () => {
   const [menus, setMenus] = useState([]);
   const [menuId, setMenuId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenDelete, setIsOpenDelete] = useState(false);
 
   const {
     handleSubmit,
@@ -70,6 +72,7 @@ const Menu = () => {
 
   const handleDelete = async (id) => {
     await deleteMenu(id);
+    setIsOpenDelete(false);
     fetchData();
   };
 
@@ -119,7 +122,8 @@ const Menu = () => {
               <span
                 className="flex flex-row cursor-pointer items-center"
                 onClick={() => {
-                  handleDelete(item.id);
+                  setIsOpenDelete(true);
+                  setMenuId(item.id);
                 }}
               >
                 <MdDelete className="w-5 h-5" /> Delete
@@ -274,6 +278,33 @@ const Menu = () => {
             </Button>
           </Modal.Footer>
         </form>
+      </Modal>
+
+      {/* Spiel message for delete */}
+
+      <Modal isOpen={isOpenDelete} variant="spiel">
+        <Modal.Body>
+          <div className="flex flex-col items-center justify-center ">
+            <FaRegCircleQuestion className="w-[45%] h-[45%] text-cyan-700 mb-5" />
+            <label className="text-sm text-center">
+              Are you sure you want to this delete this record?
+            </label>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={() => handleDelete(menuId)}>
+            Ok
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setIsOpenDelete(false);
+              setMenuId(null);
+            }}
+          >
+            Cancel
+          </Button>
+        </Modal.Footer>
       </Modal>
     </Layout>
   );
