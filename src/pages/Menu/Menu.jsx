@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Input,
@@ -11,6 +11,7 @@ import Layout from '../../hoc/Layout';
 import { GrAdd } from 'react-icons/gr';
 import { TbCurrencyPeso } from 'react-icons/tb';
 import { useForm, Controller } from 'react-hook-form';
+import { AddMenu, getMenus } from '../../helper/query';
 
 const Menu = () => {
   const columns = [
@@ -22,68 +23,59 @@ const Menu = () => {
     { header: 'Action', field: 'action' },
   ];
 
-  const data = [
-    {
-      category: 'Break Fast',
-      name: 'Item 1',
-      price: '$10',
-      cost: 0,
-      stock: 88,
-    },
-    { category: 'Main', name: 'Item 2', price: '$20', cost: 0, stock: 88 },
-    {
-      category: 'Budget Meal',
-      name: 'Item 3',
-      price: '$30',
-      cost: 0,
-      stock: 88,
-    },
-    { category: 'Bundle', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
-    { category: 'Unlimited', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
-    { category: 'Bundle', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
-    { category: 'Unlimited', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
-    { category: 'Bundle', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
-    { category: 'Unlimited', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
-    { category: 'Bundle', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
-    { category: 'Unlimited', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
-    { category: 'Bundle', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
-    { category: 'Unlimited', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
-    { category: 'Bundle', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
-    { category: 'Unlimited', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
-    { category: 'Bundle', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
-    { category: 'Unlimited', name: 'Item 3', price: '$30', cost: 0, stock: 88 },
-  ];
-
   const sizeOptions = [
-    { value: '', label: 'Select Category' },
+    { value: '', label: '--' },
     { value: 'main', label: 'Main' },
     { value: 'dessert', label: 'Dessert' },
     { value: 'breakfast', label: 'Breakfast' },
+    { value: 'drinks', label: 'Drinks' },
   ];
 
   const radioOptions = [
-    { value: 1, label: 'Small' },
-    { value: 2, label: 'Medium' },
-    { value: 3, label: 'Large' },
+    { value: 'small', label: 'Small' },
+    { value: 'meduim', label: 'Medium' },
+    { value: 'large', label: 'Large' },
   ];
 
   const {
     handleSubmit,
     control,
     formState: { errors },
+    reset,
   } = useForm();
+
+  const [menus, setMenus] = useState([]);
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const onSubmit = (data) => {
-    console.log(data);
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => {
+    getMenus().then((data) => {
+      setMenus(data);
+    });
   };
+
+  const handleAddPost = async (data) => {
+    await AddMenu(data);
+    fetchData();
+  };
+
+  const onSubmit = (data) => {
+    handleAddPost(data);
+    setIsOpen(false);
+    reset();
+  };
+
   return (
     <Layout>
-      <Table columns={columns} data={data} />
+      <Table columns={columns} data={menus} />
       <Button
         onClick={() => {
           setIsOpen(true);
+          reset();
         }}
         className="fixed bottom-4 right-4 border bg-cyan-700 cursor-pointer rounded-full text-2xl text-white py-4"
         variant="secondary"
