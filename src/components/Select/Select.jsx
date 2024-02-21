@@ -1,6 +1,7 @@
 import React, { forwardRef } from 'react';
 
-export const Select = forwardRef(({ label, options, error = '', ...props }) => {
+export const Select = forwardRef((props, ref) => {
+  const { label, options, error = '' } = props;
   return (
     <div className="mb-4">
       <label className="block text-gray-700 text-sm mb-1">{label}</label>

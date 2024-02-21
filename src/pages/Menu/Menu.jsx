@@ -53,7 +53,16 @@ const Menu = () => {
     formState: { errors },
     reset,
     setValue,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      category: '',
+      name: '',
+      price: '',
+      stock: '',
+      cost: '',
+      size: '',
+    },
+  });
 
   useEffect(() => {
     fetchData();

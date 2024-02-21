@@ -13,11 +13,11 @@ const Layout = ({ children, openLoading }) => {
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
-        closeOnClick
+        closeOnClick={false}
         rtl={false}
         pauseOnFocusLoss
-        draggable
-        pauseOnHover
+        draggable={false}
+        pauseOnHover={false}
         theme="colored"
       />
       <main className="mx-auto px-4 mt-24">{children}</main>
